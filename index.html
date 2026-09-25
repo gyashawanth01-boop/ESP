@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ESP Dashboard</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #070b18;
+    color: #eef6ff;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+.home {
+    min-height: 100vh;
+    padding: 20px;
+
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(0, 217, 255, 0.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 100%,
+            rgba(123, 77, 255, 0.10),
+            transparent 30%
+        ),
+        #070b18;
+}
+
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar {
+    max-width: 1100px;
+    margin: auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.app-title {
+    font-size: 27px;
+    font-weight: bold;
+
+    color: #55e7ff;
+
+    text-shadow:
+        0 0 12px
+        rgba(85, 231, 255, 0.35);
+}
+
+
+/* =========================
+   CONNECT BOX
+========================= */
+
+.connect-box {
+    max-width: 700px;
+
+    margin: 50px auto;
+
+    padding: 30px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18, 29, 55, 0.96),
+            rgba(11, 17, 35, 0.96)
+        );
+
+    border: 1px solid
+        rgba(85, 231, 255, 0.15);
+
+    box-shadow:
+        0 15px 50px
+        rgba(0, 0, 0, 0.35);
+}
+
+.connect-box h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.connect-box p {
+    color: #7f8ca8;
+    margin-bottom: 22px;
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+input {
+    width: 100%;
+
+    padding: 15px;
+
+    border: 1px solid #29385e;
+
+    border-radius: 12px;
+
+    margin-bottom: 15px;
+
+    font-size: 16px;
+
+    outline: none;
+
+    background: #0d1428;
+
+    color: white;
+}
+
+input::placeholder {
+    color: #687594;
+}
+
+input:focus {
+    border-color: #55e7ff;
+
+    box-shadow:
+        0 0 12px
+        rgba(85, 231, 255, 0.15);
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+button {
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00d9ff,
+            #7b4dff
+        );
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 25px
+        rgba(0, 217, 255, 0.2);
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message {
+    text-align: center;
+
+    margin-top: 15px;
+
+    font-size: 14px;
+
+    color: #ff6688;
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    max-width: 1100px;
+    margin: auto;
+}
+
+
+/* =========================
+   DEVICE HEADER
+========================= */
+
+.device-header {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(18, 31, 60, 0.96),
+            rgba(17, 18, 45, 0.96)
+        );
+
+    padding: 22px;
+
+    border-radius: 22px;
+
+    margin-bottom: 20px;
+
+    border: 1px solid
+        rgba(85, 231, 255, 0.15);
+
+    box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.25);
+}
+
+.device-name {
+    font-size: 25px;
+
+    font-weight: bold;
+
+    color: white;
+}
+
+.device-ip {
+    color: #7383a3;
+
+    margin-top: 6px;
+}
+
+.status {
+    display: inline-block;
+
+    margin-top: 13px;
+
+    padding: 7px 14px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    background:
+        rgba(0, 255, 170, 0.12);
+
+    color: #3fffc1;
+
+    border: 1px solid
+        rgba(63, 255, 193, 0.2);
+}
+
+.status.offline {
+    background:
+        rgba(255, 65, 108, 0.12);
+
+    color: #ff6688;
+
+    border-color:
+        rgba(255, 65, 108, 0.2);
+}
+
+
+/* =========================
+   WIDGETS
+========================= */
+
+.widgets {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(220px, 1fr)
+        );
+
+    gap: 18px;
+}
+
+.widget {
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #111b35,
+            #0c1226
+        );
+
+    border-radius: 20px;
+
+    padding: 22px;
+
+    min-height: 150px;
+
+    border: 1px solid
+        rgba(100, 220, 255, 0.12);
+
+    box-shadow:
+        0 12px 35px
+        rgba(0, 0, 0, 0.3);
+
+    transition: 0.25s;
+}
+
+.widget::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #00d9ff,
+            #7b4dff
+        );
+}
+
+.widget:hover {
+    transform: translateY(-4px);
+
+    border-color:
+        rgba(85, 231, 255, 0.3);
+}
+
+.widget-title {
+    color: #8492b1;
+
+    font-size: 14px;
+
+    margin-bottom: 15px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
+}
+
+.value {
+    font-size: 35px;
+
+    font-weight: bold;
+
+    color: #55e7ff;
+
+    text-shadow:
+        0 0 15px
+        rgba(85, 231, 255, 0.25);
+}
+
+.unit {
+    font-size: 17px;
+
+    color: #8290aa;
+
+    margin-left: 5px;
+}
+
+.text-value {
+    font-size: 20px;
+
+    font-weight: 500;
+
+    color: white;
+}
+
+
+/* =========================
+   SWITCH
+========================= */
+
+.switch-btn.on {
+    background:
+        linear-gradient(
+            135deg,
+            #00d9a0,
+            #00a878
+        );
+}
+
+.switch-btn.off {
+    background:
+        linear-gradient(
+            135deg,
+            #303b59,
+            #202940
+        );
+
+    color: #a4b0c7;
+}
+
+
+/* =========================
+   GRAPH
+========================= */
+
+canvas {
+    width: 100%;
+    height: 180px;
+
+    margin-top: 10px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back-btn {
+    margin-top: 25px;
+
+    max-width: 150px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #303b59,
+            #202940
+        );
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .home {
+        padding: 12px;
+    }
+
+    .app-title {
+        font-size: 21px;
+    }
+
+    .connect-box {
+        margin-top: 30px;
+        padding: 22px;
+    }
+
+    .widgets {
+        grid-template-columns: 1fr;
+    }
+
+    .widget {
+        min-height: 135px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     HOME
+================================================== -->
+
+<section id="homeScreen" class="home">
+
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <div class="app-title">
+            ESP Dashboard
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         CONNECT ESP32
+    ================================================== -->
+
+    <div
+        id="connectBox"
+        class="connect-box">
+
+        <h2>
+            Connect ESP32
+        </h2>
+
+        <p>
+            Enter the IP address of your ESP32
+            to open its dashboard.
+        </p>
+
+        <input
+            type="text"
+            id="espIP"
+            placeholder="Example: 192.168.1.50"
+        >
+
+        <button onclick="connectESP()">
+
+            Connect
+
+        </button>
+
+        <div
+            id="connectionMessage"
+            class="message">
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         DASHBOARD
+    ================================================== -->
+
+    <div
+        id="dashboardSection"
+        class="dashboard hidden">
+
+
+        <!-- DEVICE HEADER -->
+
+        <div class="device-header">
+
+            <div
+                id="deviceName"
+                class="device-name">
+
+                ESP32
+
+            </div>
+
+            <div
+                id="deviceIP"
+                class="device-ip">
+            </div>
+
+            <div
+                id="deviceStatus"
+                class="status">
+
+                Online
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DYNAMIC WIDGETS -->
+
+        <div
+            id="widgets"
+            class="widgets">
+        </div>
+
+
+
+        <!-- BACK -->
+
+        <button
+            class="back-btn"
+            onclick="backToHome()">
+
+            ← Back
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<script>
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let espIP = "";
+
+let refreshTimer = null;
+
+let graphHistory = {};
+
+
+
+/* =====================================================
+   CONNECT ESP32
+===================================================== */
+
+async function connectESP() {
+
+    let ip =
+        document
+        .getElementById("espIP")
+        .value
+        .trim();
+
+    const message =
+        document
+        .getElementById(
+            "connectionMessage"
+        );
+
+
+    if (!ip) {
+
+        message.style.color =
+            "#ff6688";
+
+        message.innerText =
+            "Enter ESP32 IP address.";
+
+        return;
+    }
+
+
+    /*
+        Remove http://
+        or https://
+    */
+
+    ip = ip
+        .replace("http://", "")
+        .replace("https://", "")
+        .replace(/\/$/, "");
+
+
+    espIP = ip;
+
+
+    message.style.color =
+        "#55e7ff";
+
+    message.innerText =
+        "Connecting to ESP32...";
+
+
+    try {
+
+        /*
+            ESP32 endpoint:
+
+            GET /dashboard
+        */
+
+        const response =
+            await fetch(
+                `http://${espIP}/dashboard`
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "ESP32 error"
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        localStorage.setItem(
+            "lastESPIP",
+            espIP
+        );
+
+
+        showDashboard(data);
+
+
+        message.innerText = "";
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        message.style.color =
+            "#ff6688";
+
+        message.innerText =
+            "Could not connect to ESP32.";
+    }
+}
+
+
+
+/* =====================================================
+   SHOW DASHBOARD
+===================================================== */
+
+function showDashboard(data) {
+
+    document
+        .getElementById(
+            "connectBox"
+        )
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById(
+            "dashboardSection"
+        )
+        .classList
+        .remove("hidden");
+
+
+    document
+        .getElementById(
+            "deviceName"
+        )
+        .innerText =
+            data.deviceName ||
+            "ESP32";
+
+
+    document
+        .getElementById(
+            "deviceIP"
+        )
+        .innerText =
+            espIP;
+
+
+    document
+        .getElementById(
+            "deviceStatus"
+        )
+        .innerText =
+            "Online";
+
+
+    document
+        .getElementById(
+            "deviceStatus"
+        )
+        .classList
+        .remove("offline");
+
+
+    const container =
+        document.getElementById(
+            "widgets"
+        );
+
+
+    container.innerHTML = "";
+
+    graphHistory = {};
+
+
+    /*
+        ESP32 decides what
+        appears on the dashboard.
+    */
+
+    if (
+        !data.widgets ||
+        !Array.isArray(data.widgets)
+    ) {
+
+        container.innerHTML =
+            "<p>No widgets provided by ESP32.</p>";
+
+        return;
+    }
+
+
+    data.widgets.forEach(
+        widget => {
+
+            createWidget(widget);
+
+        }
+    );
+
+
+    startAutoRefresh();
+}
+
+
+
+/* =====================================================
+   CREATE WIDGET
+===================================================== */
+
+function createWidget(widget) {
+
+    const container =
+        document.getElementById(
+            "widgets"
+        );
+
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "widget";
+
+
+    card.id =
+        "widget-" + widget.id;
+
+
+
+    /* =========================
+       VALUE
+    ========================= */
+
+    if (widget.type === "value") {
+
+        card.innerHTML = `
+
+            <div class="widget-title">
+
+                ${escapeHTML(
+                    widget.label
+                )}
+
+            </div>
+
+            <div>
+
+                <span
+                    class="value"
+                    id="value-${widget.id}">
+
+                    --
+
+                </span>
+
+                <span class="unit">
+
+                    ${escapeHTML(
+                        widget.unit || ""
+                    )}
+
+                </span>
+
+            </div>
+        `;
+    }
+
+
+
+    /* =========================
+       TEXT
+    ========================= */
+
+    else if (widget.type === "text") {
+
+        card.innerHTML = `
+
+            <div class="widget-title">
+
+                ${escapeHTML(
+                    widget.label
+                )}
+
+            </div>
+
+            <div
+                class="text-value"
+                id="value-${widget.id}">
+
+                --
+
+            </div>
+
+        `;
+    }
+
+
+
+    /* =========================
+       SWITCH
+    ========================= */
+
+    else if (
+        widget.type === "switch"
+    ) {
+
+        card.innerHTML = `
+
+            <div class="widget-title">
+
+                ${escapeHTML(
+                    widget.label
+                )}
+
+            </div>
+
+            <button
+                class="switch-btn off"
+                id="switch-${widget.id}"
+                onclick="toggleSwitch(
+                    '${widget.id}'
+                )">
+
+                OFF
+
+            </button>
+
+        `;
+    }
+
+
+
+    /* =========================
+       BUTTON
+    ========================= */
+
+    else if (
+        widget.type === "button"
+    ) {
+
+        card.innerHTML = `
+
+            <div class="widget-title">
+
+                ${escapeHTML(
+                    widget.label
+                )}
+
+            </div>
+
+            <button
+                onclick="pressButton(
+                    '${widget.id}'
+                )">
+
+                ${escapeHTML(
+                    widget.text ||
+                    "Press"
+                )}
+
+            </button>
+
+        `;
+    }
+
+
+
+    /* =========================
+       GRAPH
+    ========================= */
+
+    else if (
+        widget.type === "graph"
+    ) {
+
+        card.innerHTML = `
+
+            <div class="widget-title">
+
+                ${escapeHTML(
+                    widget.label
+                )}
+
+            </div>
+
+            <canvas
+                id="graph-${widget.id}">
+            </canvas>
+
+        `;
+
+
+        graphHistory[
+            widget.id
+        ] = [];
+    }
+
+
+
+    /* =========================
+       UNKNOWN
+    ========================= */
+
+    else {
+
+        card.innerHTML = `
+
+            <div class="widget-title">
+
+                ${escapeHTML(
+                    widget.label ||
+                    widget.id
+                )}
+
+            </div>
+
+            <div class="text-value">
+
+                Unsupported widget
+
+            </div>
+
+        `;
+    }
+
+
+    container.appendChild(card);
+}
+
+
+
+/* =====================================================
+   UPDATE DATA
+===================================================== */
+
+async function updateData() {
+
+    if (!espIP) return;
+
+
+    try {
+
+        /*
+            ESP32 endpoint:
+
+            GET /data
+        */
+
+        const response =
+            await fetch(
+                `http://${espIP}/data`
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Data error"
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        setOnline();
+
+
+        Object.keys(data).forEach(
+            id => {
+
+                updateWidgetValue(
+                    id,
+                    data[id]
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.log(error);
+
+        setOffline();
+    }
+}
+
+
+
+/* =====================================================
+   UPDATE WIDGET VALUE
+===================================================== */
+
+function updateWidgetValue(
+    id,
+    value
+) {
+
+    const element =
+        document.getElementById(
+            "value-" + id
+        );
+
+
+    if (element) {
+
+        element.innerText =
+            value;
+    }
+
+
+    /*
+        SWITCH
+    */
+
+    const switchButton =
+        document.getElementById(
+            "switch-" + id
+        );
+
+
+    if (switchButton) {
+
+        if (
+            value === true ||
+            value === 1 ||
+            value === "on"
+        ) {
+
+            switchButton.innerText =
+                "ON";
+
+            switchButton.classList
+                .remove("off");
+
+            switchButton.classList
+                .add("on");
+
+        }
+
+        else {
+
+            switchButton.innerText =
+                "OFF";
+
+            switchButton.classList
+                .remove("on");
+
+            switchButton.classList
+                .add("off");
+        }
+    }
+
+
+    /*
+        GRAPH
+    */
+
+    if (graphHistory[id]) {
+
+        if (
+            typeof value === "number"
+        ) {
+
+            graphHistory[id].push(
+                value
+            );
+
+
+            if (
+                graphHistory[id].length >
+                30
+            ) {
+
+                graphHistory[id].shift();
+            }
+
+
+            drawGraph(id);
+        }
+    }
+}
+
+
+
+/* =====================================================
+   SWITCH CONTROL
+===================================================== */
+
+async function toggleSwitch(id) {
+
+    try {
+
+        const button =
+            document.getElementById(
+                "switch-" + id
+            );
+
+
+        const isOn =
+            button.classList
+            .contains("on");
+
+
+        const state =
+            isOn
+            ? "off"
+            : "on";
+
+
+        /*
+            ESP32 endpoint:
+
+            /control?id=relay&state=on
+        */
+
+        await fetch(
+            `http://${espIP}/control?id=${
+                encodeURIComponent(id)
+            }&state=${state}`
+        );
+
+
+        updateData();
+
+    }
+
+    catch (error) {
+
+        console.log(error);
+    }
+}
+
+
+
+/* =====================================================
+   BUTTON CONTROL
+===================================================== */
+
+async function pressButton(id) {
+
+    try {
+
+        /*
+            ESP32 endpoint:
+
+            /button?id=button1
+        */
+
+        await fetch(
+            `http://${espIP}/button?id=${
+                encodeURIComponent(id)
+            }`
+        );
+
+    }
+
+    catch (error) {
+
+        console.log(error);
+    }
+}
+
+
+
+/* =====================================================
+   GRAPH
+===================================================== */
+
+function drawGraph(id) {
+
+    const canvas =
+        document.getElementById(
+            "graph-" + id
+        );
+
+
+    if (!canvas) return;
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    const values =
+        graphHistory[id];
+
+
+    if (values.length < 2) return;
+
+
+    canvas.width =
+        canvas.clientWidth;
+
+
+    canvas.height = 180;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const min =
+        Math.min(...values);
+
+
+    const max =
+        Math.max(...values);
+
+
+    const range =
+        max - min || 1;
+
+
+    ctx.beginPath();
+
+
+    values.forEach(
+        (value, index) => {
+
+            const x =
+                (
+                    index /
+                    (values.length - 1)
+                ) *
+                canvas.width;
+
+
+            const y =
+                canvas.height -
+                (
+                    (value - min) /
+                    range
+                ) *
+                (canvas.hei
